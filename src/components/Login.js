@@ -1,4 +1,4 @@
-// src/components/Login.js
+
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/cart"); // Redirect to cart on successful login
+      navigate("/cart"); 
     } catch (err) {
       setError("Failed to log in. Please check your credentials.");
     }
