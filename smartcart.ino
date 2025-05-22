@@ -6,52 +6,45 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
  
-// WiFi Credentials
 const char* ssid = "Gokul";
 const char* password = "gokulaprasad2004";
  
-// Firebase Configuration
 FirebaseData firebaseData;
 FirebaseAuth firebaseAuth;
 FirebaseConfig firebaseConfig;
  
-// Firebase Credentials
 #define FIREBASE_HOST "https://smart-cart-189d3-default-rtdb.firebaseio.com/"
 #define FIREBASE_API_KEY "AIzaSyAzPGTKuJ4bzN6Ihvz9q5D1GHjJpOZE5yY"
 #define FIREBASE_USER_EMAIL "test@gmail.com"
 #define FIREBASE_USER_PASS "test@123"
  
-// RFID Setup
 #define SS_PIN D4
 #define RST_PIN D3
  
 MFRC522 rfid(SS_PIN, RST_PIN);
  
-// OLED Setup
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define OLED_RESET -1
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire,
 OLED_RESET);
  
-// Idle screen timeout
 const unsigned long idleTimeThreshold = 5000;
 unsigned long lastOperationTime = 0;
  
-// Function to show idle screen
 void displayIdleScreen() {
 display.clearDisplay();
 display.setTextSize(2); // Larger text
 display.setTextColor(WHITE);
-display.setCursor(0, (SCREEN_HEIGHT - 16) / 2); // Center vertically, left aligned
+display.setCursor(0, (SCREEN_HEIGHT - 16) / 2); 
 display.println("CartSense");
 display.display();
 }
  
 void setup() {
 Serial.begin(115200);
-// Initialize OLED
-if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+
+ if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
 Serial.println(F("SSD1306 allocation failed"));
 for (;;);
 }
@@ -62,7 +55,6 @@ display.setCursor(0, 0);
 display.println("Initializing...");
 display.display();
  
-// Connect to WiFi
 WiFi.begin(ssid, password);
 Serial.print("Connecting to WiFi...");
 display.println("Connecting WiFi...");
@@ -78,7 +70,6 @@ display.setCursor(0, 0);
 display.println("WiFi Connected!");
 display.display();
  
-// Firebase Setup
 firebaseConfig.database_url = FIREBASE_HOST;
 firebaseConfig.api_key = FIREBASE_API_KEY;
  
@@ -89,14 +80,13 @@ Firebase.begin(&firebaseConfig, &firebaseAuth);
 Firebase.reconnectWiFi(true);
  
  
-// Initialize RFID
 SPI.begin();
 rfid.PCD_Init();
  
 display.println("Setup Completed!");
 display.display();
 delay(2000);
-lastOperationTime = millis(); // Start idle timer
+lastOperationTime = millis(); 
 }
 void loop() {
 if (millis() - lastOperationTime > idleTimeThreshold) {
